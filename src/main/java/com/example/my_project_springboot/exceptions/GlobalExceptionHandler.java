@@ -22,7 +22,7 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<>(body, HttpStatus.NOT_FOUND);
     }
 
-    @ExceptionHandler(Exception.class) // -> indica que esse método vai tratar a exceção RecursoNaoEncontradoException  
+    @ExceptionHandler(Exception.class) // -> indica que esse método vai tratar qualquer outra exceção que não tenha sido tratada especificamente
     public ResponseEntity<Object> handleRecursoNaoEncontrado(Exception ex){
         Map<String, Object> body = new LinkedHashMap<>();
         body.put("timestamp", LocalDateTime.now());
