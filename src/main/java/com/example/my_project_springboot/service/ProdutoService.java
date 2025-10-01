@@ -5,6 +5,7 @@ import java.util.Optional;
 
 import org.springframework.stereotype.Service;
 
+import com.example.my_project_springboot.exceptions.RecursoNaoEncontradoException;
 import com.example.my_project_springboot.model.Produto;
 import com.example.my_project_springboot.repository.ProdutoRepository;
 
@@ -22,6 +23,11 @@ public class ProdutoService {
     }
 
     public void delete(Long id){
+        //verifica se o produto existe antes de tentar deletar
+        if(!produtoRepository.existsById(id)){
+            throw new RecursoNaoEncontradoException("Produto com id " + id + " não encontrado");
+
+        }
         produtoRepository.deleteById(id);
     }    
 
@@ -29,8 +35,10 @@ public class ProdutoService {
         return produtoRepository.findAll();
     }
 
-    public Optional<Produto> listaProdutosPorId(Long id){
-        return produtoRepository.findById(id);
+    //public Optional<Produto> listaProdutosPorId(Long id){ -> o uso de exceptions não permite mais o uso de Optional
+    public Produto listaProdutosPorId(Long id){
+        return produtoRepository.findById(id)
+        .orElseThrow(() -> new RecursoNaoEncontradoException("Produto com id " + id + " não encontrado"));
     }
 
 }
